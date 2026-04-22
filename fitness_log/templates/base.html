@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Fitness Log{% endblock %}</title>
+
+  <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #121212;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Smooth font rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Animated gradient nav background */
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    nav {
+      width: 100%;
+      background: linear-gradient(270deg, #ff6a00, #ee0979, #764ba2, #667eea);
+      background-size: 800% 800%;
+      animation: gradientAnimation 20s ease infinite;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 1.1rem 0;
+      box-shadow: 0 3px 15px rgba(238,9,121,0.6);
+      user-select: none;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      transition: 
+        background-color 0.3s ease, 
+        color 0.3s ease, 
+        transform 0.3s ease, 
+        box-shadow 0.4s ease;
+      box-shadow: 0 0 5px transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hover underline animation */
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2.5px;
+      bottom: 0;
+      left: 0;
+      background: #ff6a00;
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 100%;
+    }
+
+    nav a:hover, nav a:focus {
+      background-color: rgba(255, 106, 0, 0.2);
+      color: #ffb07c;
+      box-shadow: 0 4px 14px rgba(255, 106, 0, 0.7);
+      transform: scale(1.08);
+      outline: none;
+    }
+
+    .container {
+      margin: 3rem auto;
+      width: 90%;
+      max-width: 900px;
+      background: rgba(12, 194, 218, 0.8);
+      padding: 2.5rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(102, 119, 234, 0.5);
+      backdrop-filter: blur(8px);
+      color: #f0f0f0;
+      min-height: 60vh;
+      /* Fade-in on load */
+      opacity: 0;
+      animation: fadeInContainer 1s ease forwards;
+      user-select: text;
+    }
+
+    @keyframes fadeInContainer {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav {
+        gap: 1.2rem;
+        padding: 0.9rem 0;
+      }
+      nav a {
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+      }
+      .container {
+        padding: 2rem 1.5rem;
+        margin: 2rem 1rem;
+      }
+    }
+  </style>
+
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    {% if session.get('username') %}
+      <a href="/dashboard">Dashboard</a>
+      <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+    {% endif %}
+  </nav>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
+

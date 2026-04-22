@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% block title %}Plan: {{ name|title }}{% endblock %}
+{% block content %}
+<style>
+  /* Container and Typography */
+  h2.fade-in {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ff4500;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 0 3px 15px rgba(255, 69, 0, 0.9);
+    animation: fadeInScale 1s ease forwards;
+    user-select: none;
+  }
+
+  h3.slide-left {
+    font-size: 1.9rem;
+    color: #ff6a00;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(255, 106, 0, 0.7);
+    animation: slideInLeft 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  ul {
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+    padding-left: 1.5rem;
+    color: #eee;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    animation: fadeInScale 1s ease 0.5s forwards;
+    opacity: 0;
+  }
+
+  ul li {
+    margin-bottom: 1.1rem;
+    position: relative;
+    padding-left: 1.4rem;
+    animation: bounceIn 0.6s ease forwards;
+    opacity: 1;
+  }
+
+  /* Animate each li with delay */
+  ul li:nth-child(1) { animation-delay: 0.7s; }
+  ul li:nth-child(2) { animation-delay: 0.9s; }
+  ul li:nth-child(3) { animation-delay: 1.1s; }
+  ul li:nth-child(4) { animation-delay: 1.3s; }
+  ul li:nth-child(5) { animation-delay: 1.5s; }
+
+  /* Custom bullet */
+  ul li::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    color: #ff6a00;
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-shadow: 0 0 6px #ff6a00;
+    animation: pulseStar 3s ease infinite;
+    transform-origin: center;
+  }
+
+  /* Button styling */
+  .btn {
+    display: block;
+    max-width: 200px;
+    margin: 2rem auto;
+    padding: 1.1rem 0;
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: center;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow:
+      0 0 20px #ff6a00,
+      0 0 40px #ee0979;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: pulseGlow 3s infinite;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    transform: scale(1.15);
+    box-shadow:
+      0 0 40px #ff6a00,
+      0 0 80px #ee0979,
+      0 0 120px #ff6a00;
+    outline: none;
+  }
+
+  .btn:active {
+    transform: scale(0.9);
+    box-shadow:
+      0 0 20px #ff6a00,
+      0 0 35px #ee0979;
+  }
+
+  /* Animations */
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow:
+        0 0 20px #ff6a00,
+        0 0 40px #ee0979;
+    }
+    50% {
+      box-shadow:
+        0 0 35px #ff6a00,
+        0 0 70px #ee0979;
+    }
+  }
+
+  @keyframes pulseStar {
+    0%, 100% {
+      transform: scale(1);
+      color: #ff6a00;
+      text-shadow: 0 0 6px #ff6a00;
+    }
+    50% {
+      transform: scale(1.4);
+      color: #ee0979;
+      text-shadow: 0 0 16px #ee0979;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    h2.fade-in {
+      font-size: 2.2rem;
+    }
+    h3.slide-left {
+      font-size: 1.5rem;
+    }
+    ul {
+      font-size: 1rem;
+      max-width: 90vw;
+      padding-left: 1.2rem;
+    }
+    .btn {
+      max-width: 160px;
+      font-size: 1.1rem;
+      padding: 0.9rem 0;
+    }
+  }
+</style>
+
+<h2 class="fade-in">{{ name|title }} Full Plan</h2>
+
+{% if name == 'weight-loss' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>Breakfast: Oatmeal + Banana + Green Tea</li>
+    <li>Lunch: Grilled Chicken + Brown Rice + Veggies</li>
+    <li>Dinner: Lentil Soup + Salad</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>30 mins brisk walking</li>
+    <li>20 mins HIIT</li>
+    <li>Stretching before and after workouts</li>
+  </ul>
+
+{% elif name == 'muscle-gain' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>Breakfast: Eggs + Toast + Peanut Butter + Milk</li>
+    <li>Lunch: Beef/Chicken + Sweet Potato + Broccoli</li>
+    <li>Dinner: Cottage Cheese + Nuts + Fruits</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Day 1: Chest & Triceps</li>
+    <li>Day 2: Back & Biceps</li>
+    <li>Day 3: Legs</li>
+    <li>Day 4: Rest</li>
+    <li>Repeat</li>
+  </ul>
+
+{% elif name == 'maintenance' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>Eat balanced meals with proteins, carbs, fats</li>
+    <li>Include seasonal fruits and vegetables</li>
+    <li>Stay within your daily caloric needs</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Cardio: 3x a week</li>
+    <li>Strength training: 2x a week</li>
+    <li>Light activity daily (e.g., walking)</li>
+  </ul>
+
+{% elif name == 'body-recomposition' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>Eat high-protein meals 3–5 times/day</li>
+    <li>Start at maintenance calories or a slight deficit (200–300 kcal/day).</li>
+    <li>High in fiber, vitamins, and minerals</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Build strength in quads, glutes, and hamstrings</li>
+    <li>Barbell Back Squat – 4x5</li>
+    <li>Romanian Deadlifts – 4x6</li>
+  </ul>
+
+{% elif name == 'Strength-Building' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>🍳 Breakfast:3–4 eggs (boiled/scrambled),1 cup oats with banana & peanut butter,1 glass milk or protein shake</li>
+    <li>🍱 Lunch:Grilled chicken or paneer (150g),1 cup brown rice or 2 rotis,Steamed veggies + curd</li>
+    <li>🥗 Dinner:Grilled fish or rajma/chickpeas,1 sweet potato or 2 rotis,Salad + 1 glass warm milk</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Day 1 – Upper Body (Push: Chest, Shoulders, Triceps)</li>
+    <li>Day 2 – Lower Body (Legs + Glutes)</li>
+    <li>Day 3 – Rest or Light Activity (Stretching/Yoga/Walk)</li>
+  </ul>
+
+{% elif name == 'Athletic-performance' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>🍳 Breakfast:3–4 eggs (boiled or scrambled),1 bowl oats with milk, banana & nuts,1 glass fresh juice or smoothie</li>
+    <li>🍱 Lunch:Grilled chicken/fish or paneer (150g),1 cup brown rice or 2–3 whole wheat rotis,Steamed vegetables + curd or buttermilk</li>
+    <li>🥙 Dinner:Lean protein: fish, tofu, or dal (1 bowl),1 sweet potato or 2 roti,Mixed vegetable salad,1 glass warm milk</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Back Squats – 4 sets x 5 reps</li>
+    <li>Dynamic Warm-up (High knees, A-skips) – 10 min</li>
+    <li>Yoga, Mobility or Light Jog – 30–45 min</li>
+  </ul>
+
+{% elif name == 'endurance-training' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>🍳 Breakfast:1 bowl oats with milk, banana, and chia/flax seeds</li>
+    <li>🍱 Lunch:Grilled chicken/tofu/paneer (150g)</li>
+    <li>🥙 Dinner:Fish or dal/sprouted moong (1 bowl)</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Light Jog / Bike Ride / Swim – 45–60 minutes at a steady pace</li>
+    <li>Warm-Up – 10 mins light jog</li>
+    <li>Foam rolling + mobility drills (hips, calves, shoulders)</li>
+  </ul>
+
+{% elif name == 'lean-bulk' %}
+  <h3 class="slide-left">Diet Plan</h3>
+  <ul>
+    <li>🍳 Breakfast:3–4 eggs (boiled or scrambled),1 cup oats with milk, banana, and peanut butter,1 glass of milk or protein shake</li>
+    <li>🍱 Lunch:1 cup brown rice or 2 whole wheat rotis,Steamed vegetables + 1 bowl curd</li>
+    <li>🥙 Dinner:Salad + 1 glass warm milk</li>
+  </ul>
+  <h3 class="slide-left">Workout Plan</h3>
+  <ul>
+    <li>Bench Press – 4 sets x 6–8 reps</li>
+    <li>Pull-Ups or Lat Pulldowns – 4 sets x 8 reps</li>
+    <li>Romanian Deadlifts – 3 sets x 8–10 reps</li>
+  </ul>
+
+{% else %}
+  <p style="text-align:center; color:#ff4c4c; font-weight:700; font-size:1.3rem; animation: fadeInScale 1s ease forwards;">Plan not found.</p>
+{% endif %}
+
+<a href="/dashboard" class="btn" tabindex="0">Back to Dashboard</a>
+{% endblock %}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nutrition Tracker</title>
+  <style>
+    /* Fonts and Background */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 40px;
+      min-height: 100vh;
+      background: url('/static/diet.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      position: relative;
+      animation: fadeIn 1s ease-in;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom right, rgba(0,0,0,0.6), rgba(20,20,20,0.7));
+      z-index: -1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffcc80;
+      font-size: 3rem;
+      animation: slideIn 1s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease-in;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      background-color: rgba(0, 150, 136, 0.9);
+      color: #fff;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.8);
+      transition: transform 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      transform: scale(1.05);
+      border-color: #80cbc4;
+    }
+
+    button, input[type="submit"] {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #26a69a, #00796b);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    button:hover, input[type="submit"]:hover {
+      background: linear-gradient(135deg, #004d40, #26a69a);
+      transform: scale(1.05);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    li {
+      padding: 5px;
+    }
+
+    li[style*="red"] {
+      color: #ef9a9a;
+    }
+
+    li[style*="green"] {
+      color: #a5d6a7;
+    }
+
+    .totals {
+      margin-top: 40px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-left: 5px solid #aed581;
+      border-radius: 15px;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 1s ease-out;
+    }
+
+    .totals h2 {
+      color: #ffee58;
+      text-align: center;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Nutrition Tracker</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for category, message in messages %}
+          <li style="color: {% if category == 'error' %}red{% else %}green{% endif %};">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST">
+    <table>
+      <thead>
+        <tr>
+          <th>Food</th>
+          <th>Quantity</th>
+          <th>Calories</th>
+          <th>Protein (g)</th>
+          <th>Carbs (g)</th>
+          <th>Fat (g)</th>
+        </tr>
+      </thead>
+      <tbody id="food-rows">
+        <tr>
+          <td><input type="text" name="food_name" required></td>
+          <td><input type="number" step="0.01" min="0" name="quantity" required></td>
+          <td><input type="number" step="0.01" min="0" name="calories" required></td>
+          <td><input type="number" step="0.01" min="0" name="protein" required></td>
+          <td><input type="number" step="0.01" min="0" name="carbs" required></td>
+          <td><input type="number" step="0.01" min="0" name="fat" required></td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" onclick="addRow()">Add More Food</button><br>
+    <input type="submit" value="Calculate Totals">
+  </form>
+
+  {% if totals %}
+  <div class="totals">
+    <h2>Nutrition Totals</h2>
+    <ul>
+      <li><strong>Calories:</strong> {{ totals.calories|round(2) }}</li>
+      <li><strong>Protein:</strong> {{ totals.protein|round(2) }} g</li>
+      <li><strong>Carbs:</strong> {{ totals.carbs|round(2) }} g</li>
+      <li><strong>Fat:</strong> {{ totals.fat|round(2) }} g</li>
+    </ul>
+  </div>
+  {% endif %}
+
+  <script>
+    function addRow() {
+      const tbody = document.getElementById('food-rows');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td><input type="text" name="food_name" required></td>
+        <td><input type="number" step="0.01" min="0" name="quantity" required></td>
+        <td><input type="number" step="0.01" min="0" name="calories" required></td>
+        <td><input type="number" step="0.01" min="0" name="protein" required></td>
+        <td><input type="number" step="0.01" min="0" name="carbs" required></td>
+        <td><input type="number" step="0.01" min="0" name="fat" required></td>
+      `;
+      tbody.appendChild(newRow);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% block title %}Category: {{ name|title }}{% endblock %}
+{% block content %}
+<style>
+  /* Overall container fade-in */
+  .container {
+    animation: fadeInContainer 1.2s ease forwards;
+    opacity: 0;
+    max-width: 720px;
+    margin: 2rem auto 3rem;
+    padding: 0 1rem;
+  }
+
+  /* Heading with gradient text and glow */
+  h2 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(270deg, #ff6a00, #ee0979, #ff6a00);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 8s ease infinite;
+    text-shadow:
+      0 0 8px rgba(255, 106, 0, 0.7),
+      0 0 15px rgba(238, 9, 121, 0.8);
+    user-select: none;
+  }
+
+  /* Subtitle with fade + slide-up */
+  p.description {
+    font-size: 1.4rem;
+    color: #ddd;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: slideUpFade 1s ease 0.5s forwards;
+    user-select: none;
+  }
+
+  /* List container for stagger animation */
+  ul.suggestions {
+    list-style: none;
+    padding-left: 1rem;
+    color: #eee;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  /* Each list item slides in from left with delay */
+  ul.suggestions li {
+    margin-bottom: 1.2rem;
+    position: relative;
+    padding-left: 1.8rem;
+    opacity: 0;
+    animation: slideInLeft 0.7s ease forwards;
+  }
+
+  ul.suggestions li::before {
+    content: '➤';
+    position: absolute;
+    left: 0;
+    color: #ff6a00;
+    font-weight: 900;
+    text-shadow: 0 0 6px #ff6a00;
+    transform-origin: center;
+    animation: pulseBullet 3s ease infinite;
+  }
+
+  /* Stagger animation delays for list items */
+  ul.suggestions li:nth-child(1) { animation-delay: 0.7s; }
+  ul.suggestions li:nth-child(2) { animation-delay: 1s; }
+  ul.suggestions li:nth-child(3) { animation-delay: 1.3s; }
+  ul.suggestions li:nth-child(4) { animation-delay: 1.6s; }
+
+  /* Button with bounce and glowing shadows */
+  .btn {
+    display: block;
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.25rem;
+    text-align: center;
+    border-radius: 50px;
+    box-shadow:
+      0 0 15px #ff6a00,
+      0 0 40px #ee0979;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    animation: pulseGlow 3s infinite;
+    transition:
+      transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+      box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    transform: scale(1.15) translateY(-5px);
+    box-shadow:
+      0 0 30px #ff6a00,
+      0 0 70px #ee0979,
+      0 5px 15px rgba(238, 9, 121, 0.7);
+    outline: none;
+  }
+
+  .btn:active {
+    animation: btnBounce 0.3s ease forwards;
+  }
+
+  /* Floating gradient blobs behind the content */
+  .floating-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+    animation: floatBlobMove 20s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .blob1 {
+    width: 400px;
+    height: 400px;
+    background: #ff6a00;
+    top: 15%;
+    left: -150px;
+    animation-delay: 0s;
+  }
+
+  .blob2 {
+    width: 350px;
+    height: 350px;
+    background: #ee0979;
+    bottom: 10%;
+    right: -140px;
+    animation-delay: 10s;
+  }
+
+  /* Keyframes */
+
+  @keyframes gradientMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes slideUpFade {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulseBullet {
+    0%, 100% {
+      transform: scale(1);
+      color: #ff6a00;
+      text-shadow: 0 0 6px #ff6a00;
+    }
+    50% {
+      transform: scale(1.3);
+      color: #ee0979;
+      text-shadow: 0 0 18px #ee0979;
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow:
+        0 0 15px #ff6a00,
+        0 0 40px #ee0979;
+    }
+    50% {
+      box-shadow:
+        0 0 30px #ff6a00,
+        0 0 70px #ee0979;
+    }
+  }
+
+  @keyframes btnBounce {
+    0% {
+      transform: scale(1.15) translateY(-5px);
+      box-shadow:
+        0 0 30px #ff6a00,
+        0 0 70px #ee0979,
+        0 5px 15px rgba(238, 9, 121, 0.7);
+    }
+    50% {
+      transform: scale(0.9) translateY(3px);
+      box-shadow:
+        0 0 10px #ff6a00,
+        0 0 20px #ee0979;
+    }
+    100% {
+      transform: scale(1.15) translateY(-5px);
+      box-shadow:
+        0 0 30px #ff6a00,
+        0 0 70px #ee0979,
+        0 5px 15px rgba(238, 9, 121, 0.7);
+    }
+  }
+
+  @keyframes fadeInContainer {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes floatBlobMove {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, 40px) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    h2 {
+      font-size: 2.4rem;
+    }
+
+    p.description {
+      font-size: 1.2rem;
+    }
+
+    ul.suggestions {
+      font-size: 1rem;
+    }
+
+    .btn {
+      max-width: 160px;
+      font-size: 1.1rem;
+      padding: 0.85rem 0;
+    }
+  }
+</style>
+
+<div class="container" role="main" aria-labelledby="category-title">
+  <h2 id="category-title">{{ name|title }} Plan</h2>
+  <p class="description">Here are some basic suggestions for your goal:</p>
+
+  {% if name == 'weight-loss' %}
+    <ul class="suggestions">
+      <li>Reduce calorie intake.</li>
+      <li>Include more cardio workouts.</li>
+      <li>Eat high-fiber and high-protein foods.</li>
+      <li>Stay hydrated and sleep well.</li>
+    </ul>
+  {% elif name == 'muscle-gain' %}
+    <ul class="suggestions">
+      <li>Increase protein intake.</li>
+      <li>Do resistance training (e.g., weightlifting).</li>
+      <li>Eat more frequently.</li>
+      <li>Track your progress weekly.</li>
+    </ul>
+  {% elif name == 'maintenance' %}
+    <ul class="suggestions">
+      <li>Balance calories in vs. out.</li>
+      <li>Include a mix of cardio and strength training.</li>
+      <li>Keep a consistent meal schedule.</li>
+      <li>Stay active and monitor weight monthly.</li>
+    </ul>
+  {% elif name == 'body-recomposition' %}
+    <ul class="suggestions">
+      <li>Calorie Deficit.</li>
+      <li>Resistance Training.</li>
+      <li>Cardio Exercise.</li>
+      <li>High protein intake.</li>
+    </ul>
+  {% elif name == 'Strength-Building' %}
+    <ul class="suggestions">
+      <li>Gradually increase the weight, reps, or intensity to challenge your muscles and stimulate growth.</li>
+      <li>Focus on big lifts like squats, deadlifts, bench press, and overhead press that engage multiple muscle groups.</li>
+      <li>Sleep 7–9 hours per night and allow muscles to recover between workouts.</li>
+      <li>Drink plenty of water to keep muscles functioning well and to aid recovery.</li>
+    </ul>
+  {% elif name == 'Athletic-performance' %}
+    <ul class="suggestions">
+      <li>Strength training: Build a strong foundation with compound lifts (squats, deadlifts, presses).</li>
+      <li>Bodyweight control: Master push-ups, pull-ups, lunges, planks, etc.</li>
+      <li>Movement quality: Train proper form before loading heavy.</li>
+      <li>Focus: Practice visualization and breathing exercises.</li>
+    </ul>
+  {% elif name == 'endurance-training' %}
+    <ul class="suggestions">
+      <li>Start slow, go long: Focus on longer, low-to-moderate intensity sessions to build aerobic capacity.</li>
+      <li>Tempo runs: Sustained effort at lactate threshold (comfortably hard pace) for 20–40 mins.</li>
+      <li>Train 3–5 days a week consistently rather than doing sporadic long workouts.</li>
+      <li>Take at least 1–2 rest or active recovery days per week.</li>
+    </ul>
+  {% elif name == 'lean-bulk' %}
+    <ul class="suggestions">
+      <li>Focus on compound lifts: squat, deadlift, bench, rows, pull-ups.</li>
+      <li>Use progressive overload: increase weights, reps, or sets weekly.</li>
+      <li>Stick to 6–12 reps for hypertrophy with 60–90 sec rest between sets.</li>
+      <li>Drink 3–4L/day, more if training intensely or sweating heavily.</li>
+    </ul>
+  {% else %}
+    <p style="text-align:center; color:#ff4c4c;">Unknown category.</p>
+  {% endif %}
+
+  <a href="/plan/{{ name }}" class="btn" tabindex="0" role="button" aria-label="View full plan for {{ name|title }}">View Full Plan</a>
+</div>
+
+<!-- Floating blobs behind -->
+<div class="floating-blob blob1" aria-hidden="true"></div>
+<div class="floating-blob blob2" aria-hidden="true"></div>
+
+{% endblock %}
+
