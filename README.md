@@ -19,6 +19,8 @@
 - Nutrition Tracker
 - Fitness Tracker
 
+<img width="1905" height="982" alt="image" src="https://github.com/user-attachments/assets/6b2fda21-d61a-4529-b790-289caa8cd371" />
+
 - **Stacks Used:**
 - HTML
 - CSS
