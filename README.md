@@ -2,6 +2,20 @@
 <img width="1917" height="902" alt="image" src="https://github.com/user-attachments/assets/7672f911-3548-40ff-8b20-89d24e9d718e" />
 
 
-- This repo is all about my full stack project
-- Im adding my project details here
-- 
+- **Home Page - Where you give your credantials to land your fitness journey**
+
+<img width="1911" height="903" alt="image" src="https://github.com/user-attachments/assets/55e0e182-b8fb-456e-bec5-479efd022c40" />
+
+- **Select your preferred goals here listed Select your goal:**
+
+- Weight Loss
+- Muscle Gain
+- Maintenance
+- Body Recomposition
+- Strength Building
+- Athletic Performance
+- Endurance Training
+- Lean Bulk
+- Nutrition Tracker
+- Fitness Tracker
+
