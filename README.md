@@ -19,3 +19,12 @@
 - Nutrition Tracker
 - Fitness Tracker
 
+- **Stacks Used:**
+- HTML
+- CSS
+- JAVA SCRIPT
+- PYTHON
+- SQL LITE
+
+- **FrameWorks Used**
+- FLASK
